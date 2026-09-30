@@ -32,7 +32,7 @@ import { getInitialTheme, applyTheme, toggleTheme } from "./themeUtils.js";
 const TABS = [
   { id: "peta", label: "Peta" },
   { id: "lapor", label: "Lapor" },
-  { id: "aksi", label: "Aksi clean-up" },
+  { id: "aksi", label: "Bersih-Bersih" },
   { id: "admin", label: "Admin" },
 ];
 
@@ -641,7 +641,7 @@ function App() {
         )}
 
         {activeTab === "aksi" && (
-          <section aria-label="Aksi clean-up">
+          <section aria-label="Bersih-Bersih">
             <CleanupBoard
               events={events}
               reports={reports}

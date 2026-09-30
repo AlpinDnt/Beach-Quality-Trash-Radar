@@ -5,7 +5,7 @@ import { fmtDate, timeAgo } from "./utils.js";
 const inputCls =
   "mt-1 block min-h-[48px] w-full rounded-xl border border-tide/20 bg-white px-4 py-3 text-base placeholder:text-tide/60 dark:border-foam/30 dark:bg-slate-700 dark:text-foam dark:placeholder:text-foam/60";
 
-// Panel admin di tab navbar "Admin" (terpisah dari tab Aksi clean-up).
+// Panel admin di tab navbar "Admin" (terpisah dari tab Bersih-Bersih).
 // - Belum login: form kode admin (mode demo) atau email+password Supabase
 //   (mode backend — wajib agar RPC is_admin() lolos).
 // - Sudah login: antrean usulan aksi + laporan hasil lapangan yang menunggu
