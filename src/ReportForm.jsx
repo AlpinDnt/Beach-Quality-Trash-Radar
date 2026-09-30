@@ -236,6 +236,12 @@ function ReportForm({ onSubmit }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!photoDataUrl && !photoFile) {
+      setFormError(
+        "Lampirkan foto kondisi pantai dulu — laporan tanpa foto tidak bisa dikirim agar tidak ada laporan palsu."
+      );
+      return;
+    }
     if (!location) {
       setFormError(
         "Tentukan lokasi laporan dulu: pakai foto bergeotag, tekan “Pakai lokasi saya”, atau ketuk peta mini."
@@ -279,12 +285,12 @@ function ReportForm({ onSubmit }) {
   return (
     <form onSubmit={handleSubmit} noValidate className="mx-auto w-full max-w-2xl">
       <h2 className="font-display text-lg font-bold dark:text-foam">Lapor kondisi pantai</h2>
-      <p className="mt-1 text-sm dark:text-foam/90">Isi dari atas ke bawah. Lokasi wajib terisi.</p>
+      <p className="mt-1 text-sm dark:text-foam/90">Isi dari atas ke bawah. Foto dan lokasi wajib terisi.</p>
 
-      {/* 1. Foto */}
+      {/* 1. Foto (wajib) */}
       <div className="mt-4">
         <label htmlFor="foto" className="block text-sm font-bold dark:text-foam">
-          Foto
+          Foto (wajib)
         </label>
         <input
           id="foto"
@@ -294,7 +300,7 @@ function ReportForm({ onSubmit }) {
           className="mt-1 block min-h-[48px] w-full rounded-xl border border-tide/20 bg-white dark:bg-slate-700 dark:text-foam dark:border-foam/30 px-4 py-3 text-base placeholder:text-tide/60 dark:placeholder:text-foam/60"
         />
         <p className="mt-1 text-sm text-tide dark:text-foam">
-          Foto bergeotag mengisi lokasi otomatis. {photoName ? `Dipilih: ${photoName}.` : ""}
+          Foto wajib dilampirkan sebagai bukti. Foto bergeotag mengisi lokasi otomatis. {photoName ? `Dipilih: ${photoName}.` : ""}
         </p>
         {photoPreview && (
           <div>

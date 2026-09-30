@@ -209,6 +209,10 @@ export async function listReports() {
 
 export async function createReport(report, file) {
   checkRateLimit();
+  // Foto wajib agar tidak ada laporan palsu (berlaku mode demo + Supabase).
+  if (!report.photo && !file) {
+    throw new Error("Lampirkan foto kondisi pantai dulu — laporan tanpa foto tidak bisa dikirim.");
+  }
   if (distanceKm(report.lat, report.lng, BALI_CENTER.lat, BALI_CENTER.lng) > MAX_KM) {
     throw new Error("Lokasi di luar jangkauan (maksimal 15 km dari pusat Bali).");
   }
