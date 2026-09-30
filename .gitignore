@@ -27,3 +27,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Agent tooling lokal (tidak perlu dishare ke repo)
+.agents/
+.claude/
+.hermes/
+.pi/
+skills-lock.json
+
+# Sampah Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
