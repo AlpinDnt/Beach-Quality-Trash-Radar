@@ -286,7 +286,7 @@ function App() {
       if (!title) return;
       setToast(
         approve
-          ? `"${title}" disetujui dan tampil di aksi mendatang.`
+          ? `"${title}" disetujui dan tampil di jadwal berikutnya.`
           : `"${title}" ditolak.`
       );
       return;
@@ -300,7 +300,7 @@ function App() {
       setEvents((prev) => prev.map((e) => (e.id === eventId ? { ...e, ...updated } : e)));
       setToast(
         approve
-          ? `"${updated.title}" disetujui dan tampil di aksi mendatang.`
+          ? `"${updated.title}" disetujui dan tampil di jadwal berikutnya.`
           : `"${updated.title}" ditolak.`
       );
     } catch (err) {

@@ -507,9 +507,9 @@ function CleanupBoard({ events, reports, onJoin, onCreate, onProposeResult }) {
         </p>
       </div>
 
-      <h2 className="font-display mt-8 text-lg font-bold">Aksi mendatang</h2>
+      <h2 className="font-display mt-8 text-lg font-bold">Jadwal Berikutnya</h2>
       {upcoming.length === 0 ? (
-        <p className="mt-2 text-sm">Belum ada aksi mendatang. Kirim usulan pertama di bawah.</p>
+        <p className="mt-2 text-sm">Belum ada jadwal berikutnya. Buat jadwal pertama di bawah.</p>
       ) : (
         <ul className="mt-3 space-y-3">
           {upcoming.map((e) => {
@@ -593,7 +593,7 @@ function CleanupBoard({ events, reports, onJoin, onCreate, onProposeResult }) {
         </ul>
       )}
 
-      <h2 className="font-display mt-8 text-lg font-bold">Usulkan aksi</h2>
+      <h2 className="font-display mt-8 text-lg font-bold">Buat Jadwal Baru</h2>
         <div className="mt-3 rounded-2xl border border-tide/10 bg-white p-4 dark:border-foam/10 dark:bg-slate-800">
         <CreateForm reports={reports} onCreate={onCreate} />
       </div>
