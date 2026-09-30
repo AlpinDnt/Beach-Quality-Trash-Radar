@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Tailwind v4: dark: mengikuti prefers-color-scheme secara bawaan.
+   Daftarkan varian class-based agar toggle manual (class "dark" di <html>) berfungsi. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-tide: #0b3b4a;
+  --color-foam: #e6f1ee;
+  --color-sev-1: #2f7d5b;
+  --color-sev-2: #8db33a;
+  --color-sev-3: #e0a526;
+  --color-sev-4: #d1453b;
+  /* Teks error di atas latar terang: sev-4 (#d1453b) hanya ~4.0:1, di bawah AA.
+     Ink ini ≈5.6:1. Warna data severity tetap sev-4. */
+  --color-ember: #a83228;
+
+  /* Dark mode warna */
+  --color-foam-dark: #0f172a;
+  --color-slate-800: #1e293b;
+  --color-slate-700: #334155;
+  --color-slate-600: #475569;
+
+  --font-display: "Bricolage Grotesque", "Source Sans 3", system-ui, sans-serif;
+  --font-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  font-family: var(--font-sans);
+  transition: background-color 200ms, color 200ms;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-foam);
+  color: var(--color-tide);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 200ms, color 200ms;
+}
+
+html.dark body {
+  background-color: var(--color-foam-dark);
+  color: var(--color-foam);
+}
+
+/* Fokus keyboard selalu terlihat (kunci untuk cahaya terik + navigasi keyboard) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #0b3b4a;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Kontrol zoom Leaflet: target sentuh 44px agar enak dipakai satu tangan di HP */
+.leaflet-bar a {
+  width: 44px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+  font-size: 22px !important;
+}
+
+.leaflet-popup-content {
+  font-family: var(--font-sans);
+}
+
+/* Popup Leaflet di dark mode: CSS bawaan Leaflet memaksa teks #333 di atas
+   latar putih, sehingga kotak detail dark: kita jadi gelap-di-atas-gelap.
+   Selaraskan wrapper, tip, dan tombol tutup dengan tema gelap. */
+html.dark .leaflet-popup-content-wrapper {
+  background-color: var(--color-slate-800);
+  color: var(--color-foam);
+}
+
+html.dark .leaflet-popup-tip {
+  background-color: var(--color-slate-800);
+}
+
+html.dark .leaflet-popup-close-button {
+  color: var(--color-foam);
+}
+
+html.dark .leaflet-control-attribution {
+  background-color: rgb(30 41 59 / 0.85);
+  color: #cbd5e1;
+}
+
+html.dark .leaflet-control-attribution a {
+  color: #7dd3fc;
+}
+
+/* Guard: reset Tailwind preflight agar tile Leaflet tidak terdistorsi */
+.leaflet-container img.leaflet-tile {
+  max-width: none !important;
+}
+
+/* Dot peta sebagai ikon HTML (DivIcon), bukan vektor SVG.
+   Marker HTML hanya digeser posisinya saat animasi zoom sehingga ukurannya
+   konstan — tidak ikut membesar seperti CircleMarker. Ukuran menyamai
+   diameter visual lama: 2 x (radius + weight). */
+.bq-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 2px solid #0b3b4a;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+}
+
+/* Wrapper ikon putih: tanpa style bawaan .leaflet-div-icon dan tembus klik
+   agar popup/marker di bawahnya tetap bisa diklik. */
+.bq-white-wrap {
+  background: none;
+  border: none;
+  pointer-events: none;
+}
+
+.bq-report {
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+}
+
+.bq-ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: transparent;
+  border: 2px solid #0b3b4a;
+  box-sizing: border-box;
+}
+
+/* Titik lokasi pilihan di peta mini form Lapor (pengganti CircleMarker
+   radius 10 weight 3 → diameter 26px). Sama seperti dot lain: HTML agar
+   tidak membesar saat animasi zoom. */
+.bq-pick {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #0b3b4a;
+  border: 3px solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
