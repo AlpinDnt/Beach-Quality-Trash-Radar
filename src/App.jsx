@@ -398,15 +398,14 @@ function App() {
       setProposals((prev) =>
         prev.map((p) => (p.id === proposalId ? { ...p, status: "accepted" } : p))
       );
-      // Catatan hijau sebagai laporan resmi agar persisten + tampil di peta.
-      // Foto usulan sudah berupa URL Storage sehingga bisa dipakai langsung.
-      // Pantai custom/"Lainnya" memakai rata-rata lokasi laporannya.
-      // Laporan kotor yang ditandai ikut terarsip (dihapus dari daftar aktif)
-      // agar tidak dobel dengan catatan hijau bukti — tiap pantai menyisakan
-      // 1 hijau. Sama seperti penghijauan sebelumnya, pengarsipan ini hanya
-      // lokal sesi ini (tidak ada API delete); saat reload, data server
-      // muncul lagi via listReports.
-      const spot = greenSpotFor(target.beach, reports);
+      // Pantai preset: arsip yang dibersihkan + 1 hijau bukti (lihat bawah).
+      // Pantai custom/"Lainnya": dot yang dibersihkan langsung menghijau di
+      // tempat — tiap lokasi bisa punya hijau sendiri (mis. Gilimanuk dan
+      // Amed yang sama-sama bernama "Lainnya"). Id, koordinat, catatan, dan
+      // foto asli tidak berubah, tidak ada laporan baru.
+      // Keduanya hanya lokal sesi ini (tidak ada API update/delete); saat
+      // reload, data server muncul lagi via listReports.
+      const isPreset = BEACHES.some((b) => b.name === target.beach);
       const wanted = new Set(Array.isArray(proposal.cleanedIds) ? proposal.cleanedIds : []);
       const nowMs = Date.now();
       function isCleanedTarget(r) {
@@ -415,6 +414,14 @@ function App() {
         const t = new Date(r.takenAt).getTime();
         return !Number.isNaN(t) && nowMs - t <= OLD_MS && nowMs - t >= 0;
       }
+      if (!isPreset) {
+        setReports((prev) => prev.map((r) => (isCleanedTarget(r) ? { ...r, severity: 1 } : r)));
+        setToast(`Hasil ${target.title} disahkan — status ${target.beach} membaik.`);
+        return;
+      }
+      const spot = greenSpotFor(target.beach, reports);
+      // Preset: 1 catatan hijau bukti di koordinat resmi + arsip yang dibersihkan.
+      // Foto usulan sudah berupa URL Storage sehingga bisa dipakai langsung.
       if (spot) {
         try {
           const green = await createReport({
@@ -457,9 +464,24 @@ function App() {
     setEvents((prev) =>
       prev.map((e) => (e.id === target.id ? { ...e, status: "done", kg, volunteers } : e))
     );
+    const isPreset = BEACHES.some((b) => b.name === target.beach);
+    const nowMs = Date.now();
+    if (!isPreset) {
+      // Custom/"Lainnya": langsung menghijau di tempat (lihat handleConfirmProposal).
+      setReports((prev) =>
+        prev.map((r) => {
+          if (r.beach !== target.beach || r.severity <= 1) return r;
+          if (wanted.size > 0 && !wanted.has(r.id)) return r;
+          const t = new Date(r.takenAt).getTime();
+          if (Number.isNaN(t) || nowMs - t > OLD_MS || nowMs - t < 0) return r;
+          return { ...r, severity: 1 };
+        })
+      );
+      setToast(`Hasil ${target.title} disahkan — status ${target.beach} membaik.`);
+      return;
+    }
     const spot = greenSpotFor(target.beach, reports);
     if (spot) {
-      const nowMs = Date.now();
       const record = {
         id: `r-bersih-${nowMs}`,
         beach: target.beach,
