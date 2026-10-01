@@ -373,17 +373,22 @@ function MapView({ reports, statuses, selectedBeach, onSelectBeach, onGoReport }
                 />
               );
             })}
-          {/* Dot laporan individual. Hijau (severity 1) tampil maksimal 1 per
-              pantai (yang terbaru, lihat latestGreenIds) dan SELALU digambar
-              walau zoom jauh — sebagai bukti pantai sudah dibersihkan.
-              Laporan lain hanya digambar saat zoom detail atau untuk pantai
-              yang sedang dipilih — saat zoom out koordinat laporan (15–50 m
-              dari titik pantai, < 1 px) pasti menimpa titik putih secara
-              miring sehingga terlihat berantakan. Tidak ada lagi dot warna
-              status yang sepusat dengan titik putih: dot berwarna di peta ini
-              SEMUANYA dot laporan. Rincian semua laporan tetap ada di panel
-              status. */}
+          {/* Dot laporan individual.
+              - Pantai custom/"Lainnya": tiap laporan SELALU dapat dot di semua
+                zoom — tidak ada titik putih/heatmap, jadi dot adalah
+                satu-satunya penanda lokasi (jumlah dot = jumlah laporan).
+              - Pantai preset: hijau (severity 1) tampil maksimal 1 (yang
+                terbaru, lihat latestGreenIds) dan SELALU digambar walau zoom
+                jauh — sebagai bukti pantai sudah dibersihkan. Laporan lain
+                hanya digambar saat zoom detail atau untuk pantai yang sedang
+                dipilih — saat zoom out koordinat laporan (15–50 m dari titik
+                pantai, < 1 px) pasti menimpa titik putih secara miring
+                sehingga terlihat berantakan. Tidak ada lagi dot warna status
+                yang sepusat dengan titik putih: dot berwarna di peta ini
+                SEMUANYA dot laporan. Rincian semua laporan tetap ada di panel
+                status. */}
           {reports.filter((r) => {
+            if (!PRESET_NAMES.has(r.beach)) return true;
             const isLatestGreen = r.severity === 1 && latestGreenIds.has(r.id);
             if (isLatestGreen) return true;
             if (r.severity === 1) return false;
