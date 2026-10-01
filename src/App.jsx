@@ -582,7 +582,7 @@ function App() {
               Radar Pantai Bali
             </h1>
             <p className="text-sm text-white/85 dark:text-foam/75">
-              Peta kebersihan, laporan warga, dan aksi clean-up.
+              Peta kebersihan, laporan warga, dan aksi Bersih-bersih.
             </p>
           </div>
           <div className="flex items-center gap-2 md:gap-3">
